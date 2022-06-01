@@ -131,6 +131,7 @@ contract StrategyBalancerClonable is BaseStrategy {
             );
     }
 
+    // We don't send rewards to new strategy in prepareMigration in case something is rekt, so migration can also include a manual claimRewards + sweep if needed
     function claimRewards() external onlyKeepers() {
         // Should be a harmless function, so 'onlyKeepers' is appropriate
         _claimRewards();
@@ -256,6 +257,7 @@ contract StrategyBalancerClonable is BaseStrategy {
 
                 if (_sendToVoter > 0) {
                     BAL.safeTransfer(address(voterProxy), _sendToVoter); // So that strategy doesn't need to know about voter, we send BAL via voter proxy
+                    voterProxy.transferBALToVoter();
                 }
             }
         }
@@ -344,14 +346,6 @@ contract StrategyBalancerClonable is BaseStrategy {
         uint256 _stakedBalance = stakedBalance();
         if (_stakedBalance > 0) {
             voterProxy.withdraw(gauge, address(want), _stakedBalance);
-        }
-
-        for (uint256 i = 0; i < rewardTokens.length; i++) {
-            IERC20 rewardToken = IERC20(rewardTokens[i]);
-            uint256 _strategyBalance = rewardToken.balanceOf(address(this));
-            if (_strategyBalance > 0) {
-                rewardToken.safeTransfer(_newStrategy, _strategyBalance);
-            }
         }
     }
 

@@ -79,6 +79,7 @@ contract YearnBalancerVoter {
     function acceptGovernance() external {
         require(msg.sender == pendingGovernance, "!pending_governance");
         governance = msg.sender;
+        pendingGovernance = address(0);
     }
 
     // Controller only function for creating additional rewards from dust
