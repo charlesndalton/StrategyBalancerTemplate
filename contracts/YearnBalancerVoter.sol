@@ -46,7 +46,7 @@ contract YearnBalancerVoter {
     }
 
     constructor() public {
-        governance = msg.sender;
+        governance = 0xFEB4acf3df3cDEA7399794D0869ef76A6EfAff52;
         assets = [address(BAL), address(WETH)];
     }
 
