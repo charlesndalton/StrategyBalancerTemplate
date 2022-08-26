@@ -38,8 +38,6 @@ contract YearnBalancerVoter {
     address public proxy;
     IBalancerVault internal constant balancerVault =
         IBalancerVault(0xBA12222222228d8Ba445958a75a0704d566BF2C8);
-    IBalancerPool internal constant stakeLp =
-        IBalancerPool(0xcdE5a11a4ACB4eE4c805352Cec57E236bdBC3837);
     address[] internal assets;
 
     modifier onlyProxyOrGovernance() {
@@ -48,7 +46,7 @@ contract YearnBalancerVoter {
     }
 
     constructor() public {
-        governance = msg.sender;
+        governance = 0xFEB4acf3df3cDEA7399794D0869ef76A6EfAff52;
         assets = [address(BAL), address(WETH)];
     }
 
